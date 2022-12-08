@@ -1,6 +1,8 @@
 sqlalchemy
 adafruit-circuitpython-htu21d
+adafruit-circuitpython-shtc3 # sensor in piano-bench
 picamera
 adafruit-blinka
 RPI.GPIO
 pymysql
+loguru

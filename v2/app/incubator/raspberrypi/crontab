@@ -1,0 +1,11 @@
+################################################################################
+#
+# OPEN PLANT INCUBATOR CRONTAB
+#
+# This file should match what's at the bottom of the editor if you type `crontab -e`
+# on your pi.
+# See https://www.adminschoice.com/crontab-quick-reference for an explanation of
+# what a crontab is (or type `man crontab`) and https://crontab.guru/ for a nice
+# crontab entry editor.
+
+* * * * * python3 /home/pi/every_minute_cronjob.py

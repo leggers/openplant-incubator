@@ -12,6 +12,7 @@ with open("README.md", "r") as fh:
 
 class PostInstallCommand(distutils.cmd.Command):
     """Post-installation for installation mode."""
+
     def run(self):
         self.announce('Sourcing local profile', level=distutils.log.INFO)
         if os.path.exists('~/.profile'):
@@ -19,6 +20,19 @@ class PostInstallCommand(distutils.cmd.Command):
         self.announce('Please set config', level=distutils.log.INFO)
         time.sleep(5)
         subprocess.check_call(['set-config'])
+
+
+# Update pip to the latest version so it can find binaries required for package
+# installation like `cmake`
+os.system("sudo pip3 install --upgrade pip")
+
+# update to ensure package data is up to date
+os.system("sudo apt update")
+# sqlite stores temperature and humidity data locally
+os.system("sudo apt install sqlite3")
+
+# cmake is used to build binary extensions for some dependencies
+os.system("sudo apt install cmake")
 
 
 setuptools.setup(
@@ -29,7 +43,7 @@ setuptools.setup(
     long_description=long_description,
     url="https://github.com/genspace/openplant-incubator",
     packages=setuptools.find_packages(where="./v2/app"),
-    package_dir= {
+    package_dir={
         '': 'v2/app'
     },
     entry_points={
@@ -47,10 +61,12 @@ setuptools.setup(
         'python-dotenv',
         'sqlalchemy',
         'adafruit-circuitpython-htu21d',
+        'adafruit-circuitpython-shtc3',
         'picamera',
         'adafruit-blinka',
         'RPI.GPIO',
-        'pymysql'
+        'pymysql',
+        'dash'
     ],
     package_data={
         "incubator": [
@@ -66,3 +82,12 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
 )
+
+# Install the crontab to start recording data
+current_user = result = subprocess.check_output(
+    'whoami', shell=True).decode("utf-8").strip()
+os.system(
+    f"crontab -l -u {current_user} | cat - crontab | crontab -u {current_user} -")
+
+# TODO: figure out how to keep the python admin_dash.py process running.
+# systemd
