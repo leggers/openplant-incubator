@@ -8,4 +8,5 @@
 # what a crontab is (or type `man crontab`) and https://crontab.guru/ for a nice
 # crontab entry editor.
 
-* * * * * python3 /home/pi/every_minute_cronjob.py
+# Every ten minutes
+*/10 * * * * python3 /home/pi/every_minute_cronjob.py

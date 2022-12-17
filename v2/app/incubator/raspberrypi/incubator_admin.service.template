@@ -1,0 +1,17 @@
+# Contents of /etc/systemd/system/incubator_admin_panel.service
+# See https://wiki.debian.org/systemd/Services for more info.
+[Unit]
+Description=OpenPlant incubator admin panel
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+# TODO: figure out the right directory for this after performing installation
+# of incubator code via pip
+ExecStart=python3 /home/$user/openplant-incubator/v2/app/incubator/raspberrypi/admin_dash.py
+TimeoutStartSec=300
+User=$user
+
+[Install]
+WantedBy=multi-user.target

@@ -6,3 +6,4 @@ adafruit-blinka
 RPI.GPIO
 pymysql
 loguru
+functools

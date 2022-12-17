@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 import sqlite3
+import subprocess
 
 app = Dash(__name__)
 
@@ -28,8 +29,13 @@ app.layout = html.Div(children=[
 ])
 
 
+def get_current_user():
+    return subprocess.check_output(
+        'whoami', shell=True).decode("utf-8").strip()
+
+
 def get_database_conn_and_cursor():
-    conn = sqlite3.connect("lucas-test.db")
+    conn = sqlite3.connect(f"/home/{get_current_user()}/lucas-test.db")
     cursor = conn.cursor()
     return (conn, cursor)
 
@@ -41,7 +47,7 @@ def update_metrics(_):
     # Read previous 1 week of data
     df = pd.read_sql_query("""
 SELECT datetime(time_sec, 'unixepoch', 'localtime') as time, temp, humidity from temp_humid_1m
-WHERE time_sec > strftime('%s', datetime('now', '-6 days'))
+WHERE time_sec > strftime('%s', datetime('now', '-1 month'))
 ORDER BY time_sec DESC
 """, conn)
 
