@@ -25,6 +25,13 @@
 - If you have any of the Raspberry Pi 0 - 3 models, you'll need Wifi on the 2.4 GHz channel, these models ONLY use this band, and range can be an issue especially on the Raspberry Pi 0 models
 - Raspberry Pi 4 can now use either the 2.4 GHz or the 5 Ghz band
 
+## TODO: update this guide to use the Raspberry Pi Imager tool.
+https://www.raspberrypi.com/software/. We tested with v1.7.3. Keep these instructions
+under the file "manual install".
+## TODO: add tailscale description and installation instructions: https://tailscale.com/download/linux
+## TODO: add setup_pi.sh script and update README to explain
+## TODO: add a software diagram explaining the various moving parts: cronjob and systemd unit
+
 ### Let's get started:
 
 ##### <ins>STEP 1 - Start by downloading all the above links (this could take awhile) and assemble your physical pieces</ins>

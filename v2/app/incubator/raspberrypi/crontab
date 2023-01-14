@@ -9,4 +9,4 @@
 # crontab entry editor.
 
 # Every ten minutes
-*/10 * * * * python3 /home/pi/every_minute_cronjob.py
+*/10 * * * * python3 /home/pi/incubator_observation_cronjob.py

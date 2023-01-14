@@ -35,7 +35,7 @@ def get_current_user():
 
 
 def get_database_conn_and_cursor():
-    conn = sqlite3.connect(f"/home/{get_current_user()}/lucas-test.db")
+    conn = sqlite3.connect(f"/home/{get_current_user()}/incubator.db")
     cursor = conn.cursor()
     return (conn, cursor)
 

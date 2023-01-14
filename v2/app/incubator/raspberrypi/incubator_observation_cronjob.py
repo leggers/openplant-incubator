@@ -10,11 +10,19 @@ import adafruit_shtc3
 import board
 import cowsay
 import sqlite3
+import subprocess
 
 
 cowsay.turtle("mmmmmm, plants")
 
-logger.add("every_minute_cronjob.log", rotation="1 week")
+
+def get_current_user():
+    return subprocess.check_output(
+        'whoami', shell=True).decode("utf-8").strip()
+
+
+logger.add(
+    f"/home/{get_current_user()}/incubator_observation_cronjob.log", rotation="1 week")
 
 
 @logger.catch
@@ -25,7 +33,7 @@ def get_sensor():
 
 @logger.catch
 def get_db_conn_and_cursor() -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
-    conn = sqlite3.connect("lucas-test.db")
+    conn = sqlite3.connect(f"/home/{get_current_user()}/incubator.db")
     return (conn, conn.cursor())
 
 
