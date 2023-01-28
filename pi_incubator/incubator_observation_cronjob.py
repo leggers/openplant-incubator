@@ -6,34 +6,44 @@ from typing import Tuple
 from loguru import logger
 import time
 
-import adafruit_shtc3
+from adafruit_shtc3 import SHTC3
+from adafruit_htu21d import HTU21D
 import board
+import busio
 import cowsay
 import sqlite3
-import subprocess
+import os
+
+
+# This is a list of anonymous functions that return a sensor. Iterate through
+# the list until there's no exception!
+SENSOR_GETTERS = [
+    lambda: SHTC3(board.I2C()),
+    lambda: HTU21D(busio.I2C(board.SCL, board.SDA))
+]
 
 
 cowsay.turtle("mmmmmm, plants")
 
 
-def get_current_user():
-    return subprocess.check_output(
-        'whoami', shell=True).decode("utf-8").strip()
-
-
 logger.add(
-    f"/home/{get_current_user()}/incubator_observation_cronjob.log", rotation="1 week")
+    f"/home/{os.getlogin()}/incubator_observation_cronjob.log", rotation="1 week")
 
 
 @logger.catch
 def get_sensor():
-    i2c = board.I2C()
-    return adafruit_shtc3.SHTC3(i2c)
+    for idx, sensor_getter in enumerate(SENSOR_GETTERS):
+        try:
+            sensor = sensor_getter()
+            return sensor
+        except Exception:
+            logger.error(
+                f"Unable to get sensor from sensor getter in position [{idx}]")
 
 
 @logger.catch
 def get_db_conn_and_cursor() -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
-    conn = sqlite3.connect(f"/home/{get_current_user()}/incubator.db")
+    conn = sqlite3.connect(f"/home/{os.getlogin()}/incubator.db")
     return (conn, conn.cursor())
 
 

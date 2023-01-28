@@ -6,17 +6,17 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
 import sqlite3
-import subprocess
+import os
 
 app = Dash(__name__)
 
 
 app.layout = html.Div(children=[
-    html.H1(children='piano-bench admin'),
+    html.H1(children=f"{os.uname().nodename} admin"),
 
     # TODO: get incubator name from environment
-    html.Div(children='''
-        Welcome to piano-bench
+    html.Div(children=f'''
+        Welcome to {os.uname().nodename}
     '''),
     html.Div(id='interval-updated-graphs'),
     # This component is used to refresh data in the background because it was
@@ -29,13 +29,8 @@ app.layout = html.Div(children=[
 ])
 
 
-def get_current_user():
-    return subprocess.check_output(
-        'whoami', shell=True).decode("utf-8").strip()
-
-
 def get_database_conn_and_cursor():
-    conn = sqlite3.connect(f"/home/{get_current_user()}/incubator.db")
+    conn = sqlite3.connect(f"/home/{os.getlogin()}/incubator.db")
     cursor = conn.cursor()
     return (conn, cursor)
 
