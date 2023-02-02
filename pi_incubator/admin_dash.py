@@ -11,22 +11,24 @@ import os
 app = Dash(__name__)
 
 
-app.layout = html.Div(children=[
-    html.H1(children=f"{os.uname().nodename} admin"),
-
-    # TODO: get incubator name from environment
-    html.Div(children=f'''
+app.layout = html.Div(
+    children=[
+        html.H1(children=f"{os.uname().nodename} admin"),
+        html.Div(
+            children=f"""
         Welcome to {os.uname().nodename}
-    '''),
-    html.Div(id='interval-updated-graphs'),
-    # This component is used to refresh data in the background because it was
-    # too slow when rendering while serving a request. See `@app.callback` below
-    dcc.Interval(
-        id='interval-component',
-        interval=10 * 60 * 1000,  # ten minutes in milliseconds
-        n_intervals=0
-    )
-])
+    """
+        ),
+        html.Div(id="interval-updated-graphs"),
+        # This component is used to refresh data in the background because it was
+        # too slow when rendering while serving a request. See `@app.callback` below
+        dcc.Interval(
+            id="interval-component",
+            interval=10 * 60 * 1000,  # ten minutes in milliseconds
+            n_intervals=0,
+        ),
+    ]
+)
 
 
 def get_database_conn_and_cursor():

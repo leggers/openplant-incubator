@@ -41,6 +41,15 @@ def get_sensor():
                 f"Unable to get sensor from sensor getter in position [{idx}]")
 
 
+# Returns (temperature, humidity)
+# TODO: make a class that abstracts the sensor interfaces instead of this hacky trash
+def get_sensor_data(sensor) -> Tuple[float, float]:
+    try:
+        return sensor.measurements
+    except:
+        return (sensor.temperature, sensor.relative_humidity)
+
+
 @logger.catch
 def get_db_conn_and_cursor() -> Tuple[sqlite3.Connection, sqlite3.Cursor]:
     conn = sqlite3.connect(f"/home/{os.getlogin()}/incubator.db")
@@ -67,7 +76,7 @@ def get_latest_temp_from_db(cursor: sqlite3.Cursor) -> sqlite3.Cursor:
 
 
 def record_temp_and_humidiy(conn: sqlite3.Connection, cursor: sqlite3.Cursor, sensor):
-    temperature, relative_humidity = sensor.measurements
+    temperature, relative_humidity = get_sensor_data(sensor)
     logger.info("Got temp [{}] and humidity [{}]",
                 temperature, relative_humidity)
     cursor.execute("""
