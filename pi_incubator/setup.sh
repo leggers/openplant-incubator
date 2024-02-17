@@ -37,7 +37,7 @@ cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_D
 
 # Install the crontab. Either appends the crontab in this folder to the user's
 # existing crontab or creates a crontab.
-if test -f /var/spool/cron/crontabs/$CURRENT_USER; then
+if sudo test -f /var/spool/cron/crontabs/$CURRENT_USER; then
   crontab -l -u $CURRENT_USER | cat - $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
 else
   cat $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
