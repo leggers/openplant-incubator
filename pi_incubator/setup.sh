@@ -14,6 +14,9 @@ IFS=$'\n\t'
 #
 # See https://wiki.debian.org/systemd/Services for info about systemd services.
 
+# Install pip3
+sudo apt install -y python3-pip
+
 # Update pip to the latest version so it can find binaries required for package
 # installation like `cmake`
 sudo pip3 install --upgrade pip
