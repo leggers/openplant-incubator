@@ -37,7 +37,7 @@ cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_D
 
 # Install the crontab. Either appends the crontab in this folder to the user's
 # existing crontab or creates a crontab.
-if [ -f /var/spool/cron/crontabs/$CURRENT_USER ]; then
+if test -f /var/spool/cron/crontabs/$CURRENT_USER; then
   crontab -l -u $CURRENT_USER | cat - $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
 else
   cat $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
@@ -46,7 +46,7 @@ fi
 rm $SCRIPT_DIR/crontab
 
 # Install the systemd service. Sub values into the template and move it into place.
-cat $SCRIPT_DIR/incubator_admin.service.template | sed -e "s/USERNAME/$CURRENT_USER/" -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >incubator_admin.service
+cat $SCRIPT_DIR/incubator_admin.service.template | sed -e "s/USERNAME/$CURRENT_USER/" -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_DIR/incubator_admin.service
 sudo mv $SCRIPT_DIR/incubator_admin.service /etc/systemd/system/incubator_admin_panel.service
 
 # Launch the service
