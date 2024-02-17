@@ -33,7 +33,7 @@ CURRENT_USER=$(whoami)
 pip3 install -r $SCRIPT_DIR/requirements.txt
 
 # Substitue in our variable to our crontab template
-cat - $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_DIR/crontab
+cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_DIR/crontab
 
 # Install the crontab. Either appends the crontab in this folder to the user's
 # existing crontab or creates a crontab.
