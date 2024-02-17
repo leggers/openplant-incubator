@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
-set -euo pipefail
+set -euox pipefail
 IFS=$'\n\t'
 
 ###############################################################################
@@ -14,18 +14,15 @@ IFS=$'\n\t'
 #
 # See https://wiki.debian.org/systemd/Services for info about systemd services.
 
-# Install pip3
-sudo apt install -y python3-pip
+# ensure package data is up to date
+sudo apt update
+
+# Install pip3 to install python packages, sqlite to store data, and libatlas for pandas
+sudo apt install -y python3-pip sqlite3 libatlas-base-dev
 
 # Update pip to the latest version so it can find binaries required for package
 # installation like `cmake`
 sudo pip3 install --upgrade pip
-
-# ensure package data is up to date
-sudo apt update
-
-# sqlite stores temperature and humidity data locally. liabatlas is a pandas dependency.
-sudo apt install sqlite3 libatlas-base-dev
 
 # Since we're installing files from the directory containing this script, we'll
 # store the path in a variable.
