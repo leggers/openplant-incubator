@@ -33,7 +33,7 @@ CURRENT_USER=$(whoami)
 pip3 install -r $SCRIPT_DIR/requirements.txt
 
 # Substitue in our variable to our crontab template
-cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" > $SCRIPT_DIR/crontab
+cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_DIR/crontab
 
 # Install the crontab. Either appends the crontab in this folder to the user's
 # existing crontab or creates a crontab.
@@ -44,7 +44,7 @@ else
 fi
 
 # Install the systemd service. Sub values into the template and move it into place.
-cat incubator_admin.service.template | sed -e "s/USERNAME/$CURRENT_USER/" -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >incubator_admin.service
+cat $SCRIPT_DIR/incubator_admin.service.template | sed -e "s/USERNAME/$CURRENT_USER/" -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >incubator_admin.service
 sudo mv $SCRIPT_DIR/incubator_admin.service /etc/systemd/system/incubator_admin_panel.service
 
 # Launch the service
