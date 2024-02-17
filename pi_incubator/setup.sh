@@ -42,6 +42,8 @@ if [ -f /var/spool/cron/crontabs/$CURRENT_USER ]; then
 else
   cat $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
 fi
+# Clean up after ourselves
+rm $SCRIPT_DIR/crontab
 
 # Install the systemd service. Sub values into the template and move it into place.
 cat $SCRIPT_DIR/incubator_admin.service.template | sed -e "s/USERNAME/$CURRENT_USER/" -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >incubator_admin.service
