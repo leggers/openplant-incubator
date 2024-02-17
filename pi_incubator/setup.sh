@@ -33,13 +33,11 @@ CURRENT_USER=$(whoami)
 pip3 install -r $SCRIPT_DIR/requirements.txt
 
 # Substitue in our variable to our crontab template
-cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" >$SCRIPT_DIR/crontab
+cat $SCRIPT_DIR/crontab.template | sed -e "s|SCRIPT_DIR|$SCRIPT_DIR|" > $SCRIPT_DIR/crontab
 
 # Install the crontab. Either appends the crontab in this folder to the user's
 # existing crontab or creates a crontab.
-crontab -l -u $CURRENT_USER
-CRONTAB_EXITCODE=$?
-if [[ $CRONTAB_EXITCODE -eq 0 ]]; then
+if [ -f /var/spool/cron/crontabs/$CURRENT_USER ]; then
   crontab -l -u $CURRENT_USER | cat - $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
 else
   cat $SCRIPT_DIR/crontab | crontab -u $CURRENT_USER -
